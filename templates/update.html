@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cập nhật sản phẩm</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Cập nhật sản phẩm</h2>
+        <h4><i>Bỏ trống trường nếu không cần cập nhật.</i></h4>
+        <form method="POST" action="/update-product" id="updateForm">
+            <input type="text" name="product_id" placeholder="ID sản phẩm" required><br>
+            <input type="text" name="name" placeholder="Tên sản phẩm (mới)"><br>
+            <input type="text" name="sku" placeholder="SKU (mới)"><br>
+            <input type="text" name="categories" placeholder="Danh mục (mới)"><br>
+            <input type="number" name="stock_quantity" placeholder="Số lượng tồn kho (mới)"><br>
+            <input type="text" name="description" placeholder="Mô tả (mới)"><br>
+            <input type="text" name="regular_price" placeholder="Giá sản phẩm (mới)"><br>
+            <input type="text" name="image_url" placeholder="URL ảnh (mới)"><br>
+            <button type="submit">Cập nhật sản phẩm</button>
+        </form>
+    </div>
+</body>
+<script>
+    document.getElementById("updateForm").onsubmit = async function(event) {
+        event.preventDefault(); // Ngừng hành động submit mặc định
+
+        const form = new FormData(this);
+        const response = await fetch('/update-product', {
+            method: 'POST',
+            body: form
+        });
+
+        const data = await response.json();
+        console.log('Response Data:', data); 
+        
+        if (response.ok) {
+            alert(data.message); // Hiển thị thông báo thành công
+        } else {
+            alert(data.message || "Đã có lỗi xảy ra."); // Hiển thị lỗi nếu có
+        }
+    };
+</script>
+</html>

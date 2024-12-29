@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Sản Phẩm</title>
+</head>
+<body>
+    <h1>Danh sách sản phẩm</h1>
+    
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    {% if products %}
+        <ul>
+            {% for product in products %}
+                <li>
+                    <strong>{{ product.name }}</strong><br>
+                    id: {{ product.id}}<br>
+                    Mã sản phẩm (SKU): {{ product.sku }}<br>
+                    Giá: {{ product.regular_price }}<br>
+                    Số lượng còn lại: {{ product.stock_quantity }}<br>
+                    {% if product.images %}
+                        <img src="{{ product.images[0].src }}" alt="{{ product.name }}" width="150"><br>
+                    {% else %}
+                        <p>Không có hình ảnh</p>
+                    {% endif %}
+                    <hr>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Không có sản phẩm nào.</p>
+    {% endif %}
+</body>
+</html>

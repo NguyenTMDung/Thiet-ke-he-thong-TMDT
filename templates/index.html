@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm sản phẩm mới</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Thêm sản phẩm mới</h2>
+        <form method="POST" action="/create-product" id="productForm">
+            <input type="text" name="name" id="name" placeholder="Tên sản phẩm" required><br>
+            <input type="text" name="sku" id="sku" placeholder="SKU" required><br>
+            <input type="text" name="categories" id= "categories" placeholder="Danh mục sản phẩm" required><br>
+            <input type="int" name="stock_quantity" id= "stock_quantity" placeholder="Số lượng tồn kho" required><br>
+            <input type="text" name="description" id="description" placeholder="Mô tả sản phẩm" required><br>
+            <input type="text" name="price" id="price" placeholder="Giá sản phẩm" required><br>
+            <input type="text" name="image_url" id="image_url" placeholder="URL ảnh" required><br>
+            <button type="submit">Tạo sản phẩm</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('productForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            // Lấy dữ liệu từ form
+            const name = document.getElementById('name').value;
+            const sku = document.getElementById('sku').value;
+            const categories = document.getElementById('categories').value;
+            const description = document.getElementById('description').value;
+            const price = document.getElementById('price').value;
+            const stock_quantity = document.getElementById('stock_quantity').value;
+            const image_url = document.getElementById('image_url').value;
+
+            // Dữ liệu gửi đến API WooCommerce
+            const productData = {
+                name: name,
+                sku: sku,
+                categories: categories,
+                description: description,
+                regular_price: price,
+                stock_quantity: stock_quantity,
+                images: [{ src: image_url }]
+            };
+
+            // Gửi yêu cầu đến API WooCommerce để tạo sản phẩm
+            const response = await fetch('/create-product', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(productData)
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert('Sản phẩm đã được tạo thành công!');
+            } else {
+                alert('Có lỗi xảy ra khi tạo sản phẩm: ' + result.message);
+            }
+        });
+    </script>
+</body>
+</html>
